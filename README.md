@@ -17,24 +17,26 @@ graph TD
     subgraph GCP ["Google Cloud Platform (anggar-conv-agent)"]
         subgraph CloudRun ["Cloud Run (asia-southeast1)"]
             Frontend["Vite Frontend Web UI<br>frontend/"]
+            BackendProxy["FastAPI Proxy Backend<br>app/app/fast_api_app.py"]
             MockAPI["Mock Banking API Service<br>mock_api/main.py"]
             DB["TinyDB JSON Database<br>mock_api/db.json"]
         end
 
         subgraph VertexAI ["Vertex AI Agent Platform"]
-            RE["Reasoning Engine (Agent Runtime)<br>app/agent_runtime_app.py"]
-            ADK["Google ADK Runner<br>app/agent.py"]
+            RE["Reasoning Engine (Agent Runtime)<br>app/app/agent_runtime_app.py"]
+            ADK["Google ADK Agent<br>app/app/agent.py"]
             LLM["gemini-3.5-flash"]
             Memory["Vertex AI Session &<br>Memory Services"]
         end
         
         subgraph PackagedResources ["Packaged Resources"]
-            FAISS["In-Memory FAISS Vector DB<br>crawler/faiss_index"]
+            FAISS["In-Memory FAISS Vector DB<br>app/app/crawler/faiss_index"]
         end
     end
 
     User ==>|HTTPS| Frontend
-    Frontend ==>|SSE /run_sse| RE
+    User ==>|SSE /run_sse & /sessions| BackendProxy
+    BackendProxy ==>|Vertex AI Client SDK| RE
     RE --> ADK
     ADK -->|Generate turns & tools| LLM
     ADK <-->|Persist state / recall name| Memory
@@ -53,6 +55,7 @@ This sequence diagram illustrates the lifecycle of a user request, language dete
 sequenceDiagram
     autonumber
     actor User as User / Client
+    participant Proxy as FastAPI Proxy (Cloud Run)
     participant RE as Reasoning Engine (Agent Runtime)
     participant CB as before_agent_callback
     participant LLM as gemini-3.5-flash
@@ -60,7 +63,8 @@ sequenceDiagram
     participant FAISS as FAISS Index (RAG)
     participant MockAPI as Mock API (Cloud Run)
 
-    User->>RE: stream_query(message='Cek saldo kantong utama saya', session_id)
+    User->>Proxy: POST /run_sse (message, session_id)
+    Proxy->>RE: stream_query(message, session_id)
     RE->>CB: Execute state lifecycle hooks
     Note over CB: Detects language (ID)<br/>Extracts user name if introduced
     CB-->>RE: Return updated state context
@@ -87,7 +91,8 @@ sequenceDiagram
     Note over LLM: Formulate final response<br/>in Bahasa Indonesia
     LLM-->>RE: Yield text stream chunks
     deactivate LLM
-    RE-->>User: SSE Event stream (stream_query events)
+    RE-->>Proxy: Yield stream events
+    Proxy-->>User: SSE Event stream (stream_query events)
 ```
 
 ---
