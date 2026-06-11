@@ -338,4 +338,68 @@ describe('ChatInterface Component', () => {
     expect(typingIndicator).toHaveAttribute('aria-live', 'polite');
     expect(typingIndicator).toHaveAttribute('role', 'status');
   });
+
+  it('correctly formats double asterisks as bold and single asterisks as italic', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation((url) => {
+      const urlStr = String(url);
+      if (urlStr.includes('/sessions')) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({ id: 'mock-session-id-formatting' }),
+        } as Response);
+      }
+      if (urlStr.includes('/run_sse')) {
+        const chunks = [
+          'data: {"content":{"parts":[{"text":"Halo! Ini **respon** yang *sangat* keren."}]}}\n',
+          'data: [DONE]\n'
+        ];
+        let chunkIndex = 0;
+        const mockReader = {
+          read: async () => {
+            if (chunkIndex < chunks.length) {
+              const val = new TextEncoder().encode(chunks[chunkIndex]);
+              chunkIndex++;
+              return { value: val, done: false };
+            }
+            return { value: undefined, done: true };
+          },
+          releaseLock: () => {},
+        };
+        return Promise.resolve({
+          ok: true,
+          body: {
+            getReader: () => mockReader,
+          },
+        } as unknown as Response);
+      }
+      return Promise.reject(new Error('Unknown url'));
+    });
+
+    await act(async () => {
+      render(<ChatInterface isTestMode={true} />);
+    });
+
+    const input = screen.getByPlaceholderText('Tulis pesan...') as HTMLInputElement;
+    fireEvent.change(input, { target: { value: 'test' } });
+    
+    const form = input.closest('form')!;
+    await act(async () => {
+      fireEvent.submit(form);
+    });
+    
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    // Check that "respon" is inside a strong/bold tag
+    const strongElement = screen.getByText('respon');
+    expect(strongElement.tagName).toBe('STRONG');
+    expect(strongElement).toHaveClass('font-semibold');
+
+    // Check that "sangat" is inside an em/italic tag
+    const emElement = screen.getByText('sangat');
+    expect(emElement.tagName).toBe('EM');
+    expect(emElement).toHaveClass('italic');
+  });
 });
+

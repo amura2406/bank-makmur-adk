@@ -18,6 +18,28 @@ export interface ChatInterfaceProps {
   isTestMode?: boolean;
 }
 
+const renderFormattedText = (text: string): React.ReactNode[] => {
+  if (!text) return [];
+  const regex = /(\*\*[^\s\*](?:[^\*]*?[^\s\*])?\*\*|\*[^\s\*](?:[^\*]*?[^\s\*])?\*)/g;
+  const parts = text.split(regex);
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong key={index} className="font-semibold text-slate-100">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    } else if (part.startsWith('*') && part.endsWith('*')) {
+      return (
+        <em key={index} className="italic text-slate-200">
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+    return part;
+  });
+};
+
 const ChatInterface: React.FC<ChatInterfaceProps> = ({ isTestMode = false }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -246,7 +268,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isTestMode = false }) => 
                     : 'bg-slate-900 text-slate-100 rounded-tl-none border border-slate-800'
                 }`}
               >
-                <p className="whitespace-pre-wrap">{msg.text}</p>
+                <p className="whitespace-pre-wrap">{renderFormattedText(msg.text)}</p>
                 <span className="block text-[10px] text-right mt-1 text-slate-500 select-none">
                   {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
