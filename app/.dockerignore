@@ -1,0 +1,10 @@
+.venv
+.git
+.agents
+.saved_chats
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+tests/.pytest_cache

@@ -42,7 +42,7 @@ from app.tools import search_faq, set_user_identity, check_pocket_balance, check
 try:
     _, project_id = google.auth.default()
     os.environ["GOOGLE_CLOUD_PROJECT"] = project_id
-    os.environ["GOOGLE_CLOUD_LOCATION"] = "global"
+    os.environ["GOOGLE_CLOUD_LOCATION"] = "asia-southeast1"
     os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
 except Exception:
     pass
@@ -221,7 +221,7 @@ tools = [
 root_agent = Agent(
     name="root_agent",
     model=Gemini(
-        model="gemini-3.5-flash",
+        model="gemini-2.5-flash",
         retry_options=types.HttpRetryOptions(attempts=3),
     ),
     instruction=instruction,
