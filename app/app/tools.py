@@ -9,6 +9,15 @@ from crawler.search import search as faq_search
 from google.adk.agents.context import Context
 
 
+def _get_mock_api_url() -> str:
+    mock_api_url = os.environ.get("MOCK_API_URL")
+    if mock_api_url:
+        return mock_api_url
+    if os.environ.get("GOOGLE_CLOUD_PROJECT") == "anggar-conv-agent" and os.environ.get("INTEGRATION_TEST") != "TRUE":
+        return "https://bank-makmur-mock-api-989142664766.asia-southeast1.run.app"
+    return "http://127.0.0.1:8000"
+
+
 def search_faq(query: str) -> Dict[str, Any]:
     """Performs a semantic search on the bank's FAQ database to retrieve relevant answers.
 
@@ -70,7 +79,7 @@ def _get_account_data(tool_context: Optional[Context]) -> Dict[str, Any]:
     if tool_context and tool_context.state:
         owner_name = tool_context.state.get("user_name")
 
-    mock_api_url = os.environ.get("MOCK_API_URL", "http://127.0.0.1:8000")
+    mock_api_url = _get_mock_api_url()
     headers = _get_auth_headers(mock_api_url)
     if owner_name is not None and owner_name != "" and owner_name != "not set":
         try:
@@ -195,7 +204,7 @@ def check_transactions(
                 "message": f"Pocket '{pocket_name}' not found on this account."
             }
 
-    mock_api_url = os.environ.get("MOCK_API_URL", "http://127.0.0.1:8000")
+    mock_api_url = _get_mock_api_url()
     headers = _get_auth_headers(mock_api_url)
     url = f"{mock_api_url}/accounts/{account_id}/transactions"
     r = requests.get(url, params=params, headers=headers, timeout=5)
