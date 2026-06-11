@@ -56,7 +56,7 @@ sequenceDiagram
     participant FAISS as FAISS Index (RAG)
     participant MockAPI as Mock API (Cloud Run)
 
-    User->>RE: stream_query(message="Cek saldo kantong utama saya", session_id)
+    User->>RE: "stream_query(message='Cek saldo kantong utama saya', session_id)"
     RE->>CB: Execute state lifecycle hooks
     Note over CB: Detects language (ID)<br/>Extracts user name if introduced
     CB-->>RE: Return updated state context
@@ -83,7 +83,7 @@ sequenceDiagram
     Note over LLM: Formulate final response<br/>in Bahasa Indonesia
     LLM-->>RE: Yield text stream chunks
     deactivate LLM
-    RE-->>User: SSE Event stream (stream_query events)
+    RE-->>User: "SSE Event stream (stream_query events)"
 ```
 
 ---
