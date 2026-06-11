@@ -71,7 +71,7 @@ sequenceDiagram
     alt FAQ Query
         Tools->>FAISS: query semantic vector search
         FAISS-->>Tools: return document matches
-    alt Banking Query
+    else Banking Query
         Tools->>MockAPI: GET /accounts?owner=<USER_NAME>
         MockAPI-->>Tools: return account pockets & balances
     end
