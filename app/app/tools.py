@@ -92,6 +92,25 @@ def _get_account_data(tool_context: Optional[Context]) -> Dict[str, Any]:
         return r.json()
 
 
+def _normalize_pocket_name(name: str) -> str:
+    name_lower = name.lower().strip()
+    if name_lower.startswith("kantong "):
+        name_lower = name_lower[len("kantong "):].strip()
+    synonyms = {
+        "utama": "main pocket",
+        "main": "main pocket",
+        "tabungan": "saving pocket",
+        "saving": "saving pocket",
+        "travel": "travel pocket",
+        "liburan": "travel pocket",
+        "shopping": "shopping pocket",
+        "belanja": "shopping pocket",
+        "emergency": "emergency pocket",
+        "darurat": "emergency pocket",
+    }
+    return synonyms.get(name_lower, name_lower)
+
+
 def check_pocket_balance(pocket_name: str, tool_context: Context) -> Dict[str, Any]:
     """Retrieves the balance of the specified pocket in the user's account.
 
@@ -111,9 +130,10 @@ def check_pocket_balance(pocket_name: str, tool_context: Context) -> Dict[str, A
 
     pockets = account_data.get("pockets", [])
 
-    target_name = pocket_name.lower().strip()
+    target_name = _normalize_pocket_name(pocket_name)
     for p in pockets:
-        if p["name"].lower().strip() == target_name:
+        p_norm = _normalize_pocket_name(p["name"])
+        if p_norm == target_name or p["name"].lower().strip() == pocket_name.lower().strip():
             return {
                 "status": "success",
                 "account_id": account_data["account_id"],
@@ -160,8 +180,10 @@ def check_transactions(
     if pocket_name:
         pockets = account_data.get("pockets", [])
         target_pocket = None
+        target_name = _normalize_pocket_name(pocket_name)
         for p in pockets:
-            if p["name"].lower().strip() == pocket_name.lower().strip():
+            p_norm = _normalize_pocket_name(p["name"])
+            if p_norm == target_name or p["name"].lower().strip() == pocket_name.lower().strip():
                 target_pocket = p["name"]
                 break
 

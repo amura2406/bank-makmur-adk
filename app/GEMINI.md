@@ -59,3 +59,5 @@ Ask the user: Option A (simple single-project) or Option B (full CI/CD pipeline 
 - **Run Python with `uv`**: `uv run python script.py`. Run `agents-cli install` first.
 - **Stop on repeated errors**: If the same error appears 3+ times, fix the root cause instead of retrying.
 - **Terraform conflicts** (Error 409): Use `terraform import` instead of retrying creation.
+- **PII & Sensitive Information**: Never commit or document real service URLs, project numbers, access credentials, or private IPs. Use placeholders like `https://<SERVICE_NAME>-<PROJECT_NUMBER>.<REGION>.run.app`. If leaked, immediately amend the commit or soft-reset to purge it from history.
+- **Mermaid Diagram Syntax**: Ensure all Mermaid diagrams are syntactically valid. For sequence diagrams, do not use double quotes around message strings that contain parentheses or special characters, as this causes parsing failures in markdown renderers. Use clean text descriptions.

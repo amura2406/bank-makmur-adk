@@ -1,6 +1,8 @@
 # Bank Makmur - Conversational Banking Agent
 
-A robust, production-grade bilingual conversational banking assistant designed for the imaginary bank **Bank Makmur**. The agent supports both **Bahasa Indonesia** and **English**, addressing general FAQs via an in-memory RAG (FAISS) database and performing personalized account operations via a decoupled secure Mock Banking API.
+A robust, production-grade conversational banking application designed for the imaginary bank **Bank Makmur**. The project features:
+1. **Bilingual Conversational Agent**: Implemented with Google ADK (Agent Development Kit) supporting both **Bahasa Indonesia** and **English**, addressing general FAQs via an in-memory RAG (FAISS) database, and performing personalized account operations.
+2. **Aurora Styled Frontend**: A mobile-first Vite + React + TypeScript chat interface designed with a premium Google Gemini-style Aurora gradient theme, streaming assistant responses in real time using Server-Sent Events (SSE).
 
 ---
 
@@ -10,9 +12,15 @@ The application employs a secure, decoupled architecture leveraging Google Cloud
 
 ```mermaid
 graph TD
-    User([User / E2E Client])
+    User([User / Browser])
     
-    subgraph GCP ["Google Cloud Platform (<GCP_PROJECT_ID>)"]
+    subgraph GCP ["Google Cloud Platform (anggar-conv-agent)"]
+        subgraph CloudRun ["Cloud Run (asia-southeast1)"]
+            Frontend["Vite Frontend Web UI<br>frontend/"]
+            MockAPI["Mock Banking API Service<br>mock_api/main.py"]
+            DB["TinyDB JSON Database<br>mock_api/db.json"]
+        end
+
         subgraph VertexAI ["Vertex AI Agent Platform"]
             RE["Reasoning Engine (Agent Runtime)<br>app/agent_runtime_app.py"]
             ADK["Google ADK Runner<br>app/agent.py"]
@@ -20,17 +28,13 @@ graph TD
             Memory["Vertex AI Session &<br>Memory Services"]
         end
         
-        subgraph CloudRun ["Cloud Run (asia-southeast1)"]
-            MockAPI["Mock Banking API Service<br>mock_api/main.py"]
-            DB["TinyDB JSON Database<br>mock_api/db.json"]
-        end
-        
         subgraph PackagedResources ["Packaged Resources"]
             FAISS["In-Memory FAISS Vector DB<br>crawler/faiss_index"]
         end
     end
 
-    User ==>|SSE stream_query| RE
+    User ==>|HTTPS| Frontend
+    Frontend ==>|SSE /run_sse| RE
     RE --> ADK
     ADK -->|Generate turns & tools| LLM
     ADK <-->|Persist state / recall name| Memory
@@ -56,7 +60,7 @@ sequenceDiagram
     participant FAISS as FAISS Index (RAG)
     participant MockAPI as Mock API (Cloud Run)
 
-    User->>RE: "stream_query(message='Cek saldo kantong utama saya', session_id)"
+    User->>RE: stream_query(message='Cek saldo kantong utama saya', session_id)
     RE->>CB: Execute state lifecycle hooks
     Note over CB: Detects language (ID)<br/>Extracts user name if introduced
     CB-->>RE: Return updated state context
@@ -72,7 +76,7 @@ sequenceDiagram
         Tools->>FAISS: query semantic vector search
         FAISS-->>Tools: return document matches
     else Banking Query
-        Tools->>MockAPI: GET /accounts?owner=<USER_NAME>
+        Tools->>MockAPI: GET /accounts?owner=USER_NAME
         MockAPI-->>Tools: return account pockets & balances
     end
     Tools-->>RE: Return tool execution payload
@@ -83,8 +87,25 @@ sequenceDiagram
     Note over LLM: Formulate final response<br/>in Bahasa Indonesia
     LLM-->>RE: Yield text stream chunks
     deactivate LLM
-    RE-->>User: "SSE Event stream (stream_query events)"
+    RE-->>User: SSE Event stream (stream_query events)
 ```
+
+---
+
+## 🚀 Deployed Services
+
+* **Frontend Web UI**: `https://bank-makmur-frontend-<PROJECT_NUMBER>.<REGION>.run.app`
+* **Agent Backend API**: `https://bank-makmur-mock-api-<PROJECT_NUMBER>.<REGION>.run.app`
+
+---
+
+## 🖥️ Frontend Web App (Tanya Makmur)
+
+The Vite frontend provides a premium chat interface tailored to simulate the mobile-first "Tanya Jago" app layout but styled with Gemini Aurora gradient themes (cool blues, purples, and pinks):
+* **Real-time SSE Stream Parsing**: Captures and renders text chunks as they stream back from the Vertex AI Reasoning Engine.
+* **Loading/Lookup States**: Shows a dynamic status bar ("Looking up that information for you...") when waiting for backend reasoning.
+* **Nginx Containerization**: Deployed via Nginx on Cloud Run with dynamic port binding (`$PORT`) and SPA routing fallbacks.
+* **E2E Testing Harness**: Configured with Playwright E2E browser tests that run headless browser scenarios simulating name introductions, safety checks, and pocket balance updates.
 
 ---
 
@@ -92,27 +113,21 @@ sequenceDiagram
 
 The agent is implemented as a **ReAct** (Reasoning and Action) loop using the **Google Agent Development Kit (ADK)**:
 
-### 1. Multilingual Support & Language Switching (**F01**)
+### 1. Multilingual Support & Language Switching
 - Automatic language detection is implemented in the `before_agent_callback` lifecycle hook.
-- It scans incoming prompts for language-specific vocabulary lists, setting the session preference (`preferred_language` to `id` or `en`).
+- Scans prompts for language keywords, updating the session's `preferred_language` (`id` or `en`).
 - Handles mid-conversation language switching requests dynamically (e.g. *"Please talk to me in English"*).
 
-### 2. FAQ Retrieval (RAG System) (**F02**)
-- Preloaded with FAQ articles crawled from standard online banking documentation.
-- All references to parent resources were crawled and refactored using refactoring scripts to mention only **Bank Makmur**.
+### 2. FAQ Retrieval (RAG System)
 - Grounded with an in-memory **FAISS** vector database using `langchain-community` and text embeddings.
-- Answers general questions such as branches, transfer fees, interest rates, and promotions.
+- Answers questions about branches, transfer fees, interest rates, and promotions.
 
-### 3. Personalized Pockets & Transactions (**F03 / F04**)
-- Connects to the remote Mock Banking API via REST HTTP client.
-- Performs pocket balance retrieval and historical transaction lookups based on registered session identity.
+### 3. Personalized Pockets & Transactions
+- Performs pocket balance retrieval and historical transaction lookups based on registered session identity via the Mock Banking API.
+- Normalizes Indonesian pocket names (e.g. "kantong utama") to English backend pocket equivalents ("main pocket") dynamically.
 
-### 4. Session State & Memory Persistence (**F05**)
-- Automatically parses user name introductions (e.g., *"Nama saya <USER_NAME>"*) and saves them to session state.
-- Recalls the user's name across separate conversation contexts utilizing the `VertexAiMemoryBankService` (in cloud production) or `InMemoryMemoryService` (in test runs).
-
-### 5. Telemetry & Latency Logging (**F06**)
-- Emits traces to **GCP Cloud Trace** for tracing LLM execution times, tool spans, and latency.
+### 4. Session State & Memory Persistence
+- Automatically parses user name introductions and persists identity across separate conversations utilizing the `VertexAiMemoryBankService` (in cloud production) or `InMemoryMemoryService` (in test runs).
 
 ---
 
@@ -133,42 +148,30 @@ The agent has access to 6 specialized tools defined in `app/app/tools.py`:
 
 ## 🚀 Interactive Testing Guidelines
 
-### Option A: Deployed Agent (Command Line)
-To chat with the agent deployed on Google Cloud Platform:
-```bash
-# 1. Introduce yourself to start a session
-agents-cli run \
-  --url https://<GCP_REGION>-aiplatform.googleapis.com/v1/projects/<GCP_PROJECT_ID>/locations/<GCP_REGION>/reasoningEngines/<REASONING_ENGINE_ID> \
-  --mode adk \
-  "Halo, nama saya <USER_NAME>."
+### Running the Entire Application Locally
 
-# Copy the session ID from Turn 1 footer (e.g. <SESSION_ID>)
+1. **Start the Backend Agent Playground**:
+   ```bash
+   cd app
+   uv run agents-cli playground
+   ```
+   This starts the local FastAPI server at `http://127.0.0.1:8000`.
 
-# 2. Query your pockets using the session ID to resume history
-agents-cli run \
-  --url https://<GCP_REGION>-aiplatform.googleapis.com/v1/projects/<GCP_PROJECT_ID>/locations/<GCP_REGION>/reasoningEngines/<REASONING_ENGINE_ID> \
-  --mode adk \
-  --session-id <SESSION_ID> \
-  "Cek saldo main pocket"
-```
-
-### Option B: Local Interactive Web UI
-You can start a local chat interface that auto-reloads when code changes:
-```bash
-cd app
-uv run agents-cli playground
-```
-Then visit `http://localhost:8000/playground` in your browser.
+2. **Start the Vite Frontend Web UI**:
+   In a separate terminal:
+   ```bash
+   cd frontend
+   npm install
+   VITE_API_URL=http://127.0.0.1:8000 npm run dev
+   ```
+   Then open `http://localhost:5173` in your browser.
 
 ---
 
 ## 🧪 Testing Infrastructure
 
-The suite includes 3 key test layers:
-1. **Unit Tests**: Verifies tool functions and state parsing hooks (`pytest app/tests/unit`).
-2. **Integration Tests**: Tests FastAPI application routing and streaming loops (`pytest app/tests/integration`).
-3. **E2E Tests**: Comprehensive 4-tier E2E testing framework executed using `tests/run_e2e.py` covering:
-   - **Tier 1**: Basic Feature Path Coverage
-   - **Tier 2**: Boundary and Corner Cases
-   - **Tier 3**: Cross-Feature Multi-turn Contexts
-   - **Tier 4**: Adversarial Prompts, Injections, and Safety Guards
+The suite includes 4 key test layers:
+1. **Backend Unit Tests**: Verifies tool functions and state parsing hooks (`pytest app/tests/unit`).
+2. **Backend Integration Tests**: Tests FastAPI application routing and streaming loops (`pytest app/tests/integration`).
+3. **Frontend Component Tests**: Verifies React components and layouts locally (`npm run test` in `frontend`).
+4. **Playwright E2E Tests**: Headless browser testing verifying browser interactions, SSE streaming, name introduction, and balance formatting (`npm run test:e2e` in `frontend`).

@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-aurora {
+    background: linear-gradient(
+      125deg,
+      #0f172a 0%,
+      #1e1b4b 35%,
+      #2e1049 70%,
+      #0f172a 100%
+    );
+    background-size: 200% 200%;
+    animation: aurora 15s ease infinite;
+  }
+
+  @keyframes aurora {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .bg-aurora-gradient {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+  }
+
+  /* Custom styling for a smooth rounded gradient border */
+  .gradient-border-wrapper {
+    position: relative;
+    border-radius: 9999px; /* full rounded for input bar */
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+    padding: 1px; /* border thickness */
+  }
+
+  .gradient-border-content {
+    background-color: #1e293b; /* Slate-800 background match */
+    border-radius: 9999px;
+  }
+}
