@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .agent import app
+import os
 
-__all__ = ["app"]
+if not os.environ.get("VERTEX_ENGINE_ID"):
+    from .agent import app
+    __all__ = ["app"]
+else:
+    __all__ = []
