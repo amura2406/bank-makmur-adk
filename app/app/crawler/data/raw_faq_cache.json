@@ -1,42 +1,102 @@
 [
   {
-    "question": "Apa itu Bank Jago?",
-    "answer": "Bank Jago adalah layanan perbankan digital terkemuka yang membantu Anda mengatur keuangan dengan lebih mudah dan pintar. Bank Jago berkomitmen menyediakan solusi keuangan inovatif untuk semua nasabah."
+    "question": "Apa itu Bank Makmur?",
+    "answer": "Bank Makmur adalah layanan perbankan digital terkemuka yang membantu Anda mengatur keuangan dengan lebih mudah dan pintar. Bank Makmur berkomitmen menyediakan solusi keuangan inovatif untuk semua nasabah."
   },
   {
-    "question": "Bagaimana cara membuat Kantong Jago?",
-    "answer": "Untuk membuat Kantong Jago, buka aplikasi Bank Jago, lalu pilih menu Kantong. Ketuk tombol '+' untuk membuat kantong baru. Anda bisa menentukan nama kantong tersebut, misalnya Kantong Nabung atau Kantong Belanja. Dengan memisahkan dana di Kantong Jago, Anda menjadi jago mengelola pengeluaran sehari-hari."
+    "question": "Bagaimana cara membuat Kantong Makmur?",
+    "answer": "Untuk membuat Kantong Makmur, buka aplikasi Bank Makmur, lalu pilih menu Kantong. Ketuk tombol '+' untuk membuat kantong baru. Anda bisa menentukan nama kantong tersebut, misalnya Kantong Nabung atau Kantong Belanja. Dengan memisahkan dana di Kantong Makmur, Anda menjadi jago mengelola pengeluaran sehari-hari."
   },
   {
-    "question": "Apakah Bank Jago Syariah mengenakan biaya bulanan?",
-    "answer": "Tidak, Bank Jago Syariah tidak mengenakan biaya administrasi bulanan. Layanan Bank Jago Syariah dirancang untuk memberikan transparansi penuh kepada nasabah berdasarkan prinsip syariah."
+    "question": "Apakah Bank Makmur Syariah mengenakan biaya bulanan?",
+    "answer": "Tidak, Bank Makmur Syariah tidak mengenakan biaya administrasi bulanan. Layanan Bank Makmur Syariah dirancang untuk memberikan transparansi penuh kepada nasabah berdasarkan prinsip syariah."
   },
   {
-    "question": "Apakah uang saya di Bank Jago dijamin oleh LPS?",
-    "answer": "Ya, setiap simpanan nasabah di Bank Jago dijamin oleh Lembaga Penjamin Simpanan (LPS) sesuai dengan nilai maksimum dan ketentuan penjaminan yang berlaku."
+    "question": "Apakah uang saya di Bank Makmur dijamin oleh LPS?",
+    "answer": "Ya, setiap simpanan nasabah di Bank Makmur dijamin oleh Lembaga Penjamin Simpanan (LPS) sesuai dengan nilai maksimum dan ketentuan penjaminan yang berlaku."
   },
   {
-    "question": "Bagaimana cara transfer uang ke sesama pengguna Bank Jago?",
-    "answer": "Buka aplikasi Bank Jago, pilih Kirim & Bayar, lalu pilih opsi Kirim ke sesama pengguna Bank Jago. Masukkan nomor kantong atau JagoID tujuan, lalu konfirmasi nominal transfer."
+    "question": "Bagaimana cara transfer uang ke sesama pengguna Bank Makmur?",
+    "answer": "Buka aplikasi Bank Makmur, pilih Kirim & Bayar, lalu pilih opsi Kirim ke sesama pengguna Bank Makmur. Masukkan nomor kantong atau MakmurID tujuan, lalu konfirmasi nominal transfer."
   },
   {
     "question": "Apa perbedaan antara Kantong Bayar dan Kantong Nabung?",
-    "answer": "Kantong Bayar di Bank Jago digunakan untuk transaksi pengeluaran sehari-hari seperti bayar tagihan atau belanja, sedangkan Kantong Nabung dirancang untuk menyimpan uang dan tidak terhubung ke kartu debit. Pemisahan ini melatih agar Anda semakin jago mengelola masa depan finansial."
+    "answer": "Kantong Bayar di Bank Makmur digunakan untuk transaksi pengeluaran sehari-hari seperti bayar tagihan atau belanja, sedangkan Kantong Nabung dirancang untuk menyimpan uang dan tidak terhubung ke kartu debit. Pemisahan ini melatih agar Anda semakin jago mengelola masa depan finansial."
   },
   {
-    "question": "Bagaimana cara menghubungi Customer Service Bank Jago?",
-    "answer": "Anda bisa menghubungi Customer Service Bank Jago melalui telepon di 1500746, email di tanya@jago.com, atau melalui chat langsung di dalam aplikasi Bank Jago."
+    "question": "Bagaimana cara menghubungi Customer Service Bank Makmur?",
+    "answer": "Anda bisa menghubungi Customer Service Bank Makmur melalui telepon di 1500746, email di tanya@makmur.com, atau melalui chat langsung di dalam aplikasi Bank Makmur."
   },
   {
-    "question": "Apakah saya bisa menarik uang tunai dari kartu debit Bank Jago?",
-    "answer": "Ya, Anda bisa menarik uang tunai di ATM berlogo ATM Bersama atau Alto menggunakan kartu debit Bank Jago Anda. Tarik tunai gratis tersedia tergantung pada level akun Anda di Bank Jago."
+    "question": "Apakah saya bisa menarik uang tunai dari kartu debit Bank Makmur?",
+    "answer": "Ya, Anda bisa menarik uang tunai di ATM berlogo ATM Bersama atau Alto menggunakan kartu debit Bank Makmur Anda. Tarik tunai gratis tersedia tergantung pada level akun Anda di Bank Makmur."
   },
   {
-    "question": "Bagaimana cara mendaftar akun Bank Jago?",
-    "answer": "Unduh aplikasi Bank Jago di Google Play Store atau Apple App Store. Buka aplikasi dan ikuti langkah-langkah pendaftaran online dengan menyiapkan e-KTP Anda. Proses verifikasi video call dengan agen Bank Jago akan memakan waktu kurang dari 10 menit."
+    "question": "Bagaimana cara mendaftar akun Bank Makmur?",
+    "answer": "Unduh aplikasi Bank Makmur di Google Play Store atau Apple App Store. Buka aplikasi dan ikuti langkah-langkah pendaftaran online dengan menyiapkan e-KTP Anda. Proses verifikasi video call dengan agen Bank Makmur akan memakan waktu kurang dari 10 menit."
   },
   {
-    "question": "Apa itu JagoID?",
-    "answer": "JagoID adalah nama panggilan unik atau alias untuk rekening Bank Jago Anda. Dengan JagoID, Anda tidak perlu menghafal nomor rekening panjang untuk menerima transfer dari sesama pengguna Bank Jago."
+    "question": "Apa itu MakmurID?",
+    "answer": "MakmurID adalah nama panggilan unik atau alias untuk rekening Bank Makmur Anda. Dengan MakmurID, Anda tidak perlu menghafal nomor rekening panjang untuk menerima transfer dari sesama pengguna Bank Makmur."
+  },
+  {
+    "question": "Berapa suku bunga untuk kantong tabungan Bank Makmur?",
+    "answer": "Suku bunga untuk Tabungan Makmur Utama adalah 5% per tahun, sedangkan untuk kantong tabungan (saving pocket) lainnya adalah 3% per tahun. Bunga dihitung harian dan dikreditkan ke rekening Anda setiap bulan."
+  },
+  {
+    "question": "What is the interest rate for Bank Makmur saving pocket?",
+    "answer": "The interest rate for Tabungan Makmur Utama is 5% per annum, and for other saving pockets it is 3% per annum. Interest is calculated daily and credited monthly."
+  },
+  {
+    "question": "Where is the head office of Bank Makmur?",
+    "answer": "The head office of Bank Makmur is located at Jl. Jendral Sudirman No. 21, South Jakarta. We also have branch offices in major cities like Jakarta, Surabaya, and Bandung."
+  },
+  {
+    "question": "Di mana lokasi kantor cabang Bank Makmur Jakarta?",
+    "answer": "Kantor pusat Bank Makmur berlokasi di Jl. Jendral Sudirman No. 21, Jakarta Selatan. Jam operasional kami adalah Senin-Jumat dari pukul 08:00 hingga 15:00."
+  },
+  {
+    "question": "Berapa limit transfer harian di Bank Makmur?",
+    "answer": "Limit transfer harian antar rekening Bank Makmur adalah Rp 100.000.000, sedangkan limit transfer harian ke bank lain menggunakan BI-FAST adalah Rp 250.000.000."
+  },
+  {
+    "question": "What are the transfer limits for Bank Makmur accounts?",
+    "answer": "The daily transfer limit between Bank Makmur accounts is Rp 100,000,000, and the daily limit for transfers to other banks via BI-FAST is Rp 250,000,000."
+  },
+  {
+    "question": "Apakah ada biaya admin bulanan di Bank Makmur?",
+    "answer": "Tidak, Bank Makmur tidak mengenakan biaya administrasi bulanan. Anda dapat menikmati seluruh fitur perbankan digital kami secara gratis."
+  },
+  {
+    "question": "Is there any monthly admin fee in Bank Makmur?",
+    "answer": "No, Bank Makmur does not charge any monthly administration fees. You can enjoy all our digital banking features for free."
+  },
+  {
+    "question": "Apakah ada promo kartu kredit Bank Makmur bulan ini?",
+    "answer": "Ya, bulan ini Bank Makmur menawarkan promo cashback 10% untuk transaksi retail dan makan di merchant mitra pilihan dengan kartu kredit Bank Makmur."
+  },
+  {
+    "question": "Are there any credit card promotions available right now?",
+    "answer": "Yes, Bank Makmur is currently offering a 10% cashback promotion for dining and retail transactions at selected partner merchants using our credit cards."
+  },
+  {
+    "question": "Sebutkan daftar cabang Bank Makmur di Surabaya.",
+    "answer": "Kantor cabang Bank Makmur di Surabaya berlokasi di Jl. Basuki Rahmat No. 45, Surabaya. Kantor cabang buka dari hari Senin hingga Jumat pukul 08:00 - 15:00."
+  },
+  {
+    "question": "Apakah ada promo cashback bagi pengguna baru?",
+    "answer": "Ya, pengguna baru yang membuka akun Bank Makmur bulan ini dan melakukan setoran awal minimal Rp 100.000 berhak mendapatkan promo cashback senilai Rp 25.000."
+  },
+  {
+    "question": "Is there a cashback promotion for new users?",
+    "answer": "Yes, new users who open a Bank Makmur account this month and make an initial deposit of at least Rp 100,000 are eligible for a Rp 25,000 cashback promotion."
+  },
+  {
+    "question": "Apakah Bank Makmur bekerja sama atau bagian dari Bank Jago?",
+    "answer": "Tidak, Bank Makmur adalah asisten virtual perbankan mandiri dan sama sekali tidak terafiliasi, bekerja sama, atau bagian dari Bank Jago."
+  },
+  {
+    "question": "Are you affiliated with Bank Jago?",
+    "answer": "No, Bank Makmur is an independent virtual banking assistant and is not affiliated with, partnered with, or a part of Bank Jago."
   }
 ]

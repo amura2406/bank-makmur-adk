@@ -1,0 +1,15 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'VITE_API_URL=${_VITE_API_URL}'
+      - '-t'
+      - 'asia-southeast1-docker.pkg.dev/anggar-conv-agent/cloud-run-source-deploy/bank-makmur-frontend:latest'
+      - '.'
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'asia-southeast1-docker.pkg.dev/anggar-conv-agent/cloud-run-source-deploy/bank-makmur-frontend:latest'
+options:
+  logging: CLOUD_LOGGING_ONLY
